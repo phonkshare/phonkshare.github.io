@@ -2,6 +2,7 @@
 import { signInWithPopup } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
 import { collection, addDoc, onSnapshot, orderBy, query, updateDoc, doc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+import { doc, getDoc, setDoc, updateDoc, increment } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
 
 const feed = document.querySelector("#feed");
 const postTpl = document.querySelector("#postTpl");
@@ -112,3 +113,26 @@ function connectViz(audio){
   }
   draw();
 }
+// --- Compteur de visites mensuelles ---
+async function updateVisits(){
+  const now = new Date();
+  const monthKey = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,"0")}`;
+  const refDoc = doc(db, "stats", "visits");
+
+  const snap = await getDoc(refDoc);
+  if(!snap.exists()){
+    await setDoc(refDoc, { month: monthKey, count: 1 });
+    document.getElementById("visitCount").textContent = "1";
+  } else {
+    const data = snap.data();
+    if(data.month === monthKey){
+      await updateDoc(refDoc, { count: increment(1) });
+      document.getElementById("visitCount").textContent = data.count + 1;
+    } else {
+      // Nouveau mois → reset compteur
+      await setDoc(refDoc, { month: monthKey, count: 1 });
+      document.getElementById("visitCount").textContent = "1";
+    }
+  }
+}
+updateVisits();

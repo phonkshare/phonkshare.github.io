@@ -76,3 +76,11 @@ input:focus,textarea:focus,button:focus{outline:none;box-shadow:0 0 18px rgba(75
   .nav-actions input{display:none}
   .brand h1{font-size:16px}
 }
+
+.visits {
+  font-size: 0.6em;
+  margin-left: 8px;
+  padding: 2px 6px;
+  background: var(--accent2);
+  border-radius: 8px;
+}
