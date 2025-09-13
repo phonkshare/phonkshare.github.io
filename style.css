@@ -1,0 +1,78 @@
+:root{
+  --bg:#0b0710;
+  --card: rgba(255,255,255,0.03);
+  --glass: rgba(255,255,255,0.04);
+  --accent1: #ff4d8b; /* pink */
+  --accent2: #4b6bff; /* blue */
+  --neon: linear-gradient(90deg,var(--accent1),var(--accent2));
+  --muted: rgba(255,255,255,0.6);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Arial;
+  background: radial-gradient( circle at 10% 10%, rgba(75,107,255,0.07), transparent 15%), radial-gradient( circle at 90% 90%, rgba(255,77,139,0.06), transparent 18%), var(--bg);
+  color:#e9e9ee;
+  -webkit-font-smoothing:antialiased;
+}
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;padding:14px 24px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);
+  border-bottom:1px solid rgba(255,255,255,0.03);
+}
+.brand{display:flex;gap:12px;align-items:center}
+.logo{width:44px;height:44px;color:var(--accent2)}
+.brand h1{font-family:Orbitron, sans-serif;margin:0;font-size:18px}
+.brand small{display:block;color:var(--muted);font-size:12px}
+.nav-actions{display:flex;gap:10px;align-items:center}
+.nav-actions input{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:8px;color:inherit;min-width:200px}
+.btn{background:var(--neon);padding:8px 14px;border-radius:12px;border:none;color:#0b0710;font-weight:600;cursor:pointer}
+.small{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:6px 8px;border-radius:8px;color:var(--muted)}
+.container{display:grid;grid-template-columns:240px 1fr 320px;gap:20px;padding:26px}
+.card{background:var(--card);border-radius:14px;padding:14px;box-shadow:0 6px 20px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.02)}
+.left-col .card{margin-bottom:14px}
+.profile{display:flex;gap:12px;align-items:center}
+.avatar{width:56px;height:56px;border-radius:12px;background:linear-gradient(135deg,var(--accent2),var(--accent1));display:flex;align-items:center;justify-content:center;font-weight:700}
+.trending ul{list-style:none;padding:0;margin:0}
+.trending li{padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.02);font-size:14px}
+.feed{display:flex;flex-direction:column;gap:14px}
+.post{overflow:hidden}
+.post-head{display:flex;gap:12px;align-items:center}
+.post-avatar{width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,var(--accent1),var(--accent2));display:flex;align-items:center;justify-content:center;font-weight:700}
+.post-title{margin:8px 0 6px 0}
+.post-text{color:var(--muted)}
+.post-actions{display:flex;gap:8px;align-items:center;margin-top:12px}
+.like{background:transparent;border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:10px;color:inherit;cursor:pointer}
+.right-col .upload input, .right-col .upload textarea{width:100%;padding:8px;margin-bottom:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);background:transparent;color:inherit}
+.player audio{width:100%}
+#viz{width:100%;height:60px;border-radius:8px;display:block}
+
+/* responsive */
+@media (max-width:1000px){
+  .container{grid-template-columns:1fr;padding:16px}
+  .left-col,.right-col{display:none}
+}
+
+/* flair */
+.card::after{
+  content:"";position:absolute;pointer-events:none;mix-blend-mode:screen;opacity:0.07
+}
+
+/* small helpers */
+.meta{font-size:12px;color:var(--muted)}
+.post-time{font-size:12px;color:var(--muted)}
+
+/* clickable hover */
+.post:hover{transform:translateY(-4px);transition:transform .18s ease}
+
+/* make inputs and buttons look neon when focused */
+input:focus,textarea:focus,button:focus{outline:none;box-shadow:0 0 18px rgba(75,107,255,0.08)}
+
+/* tag styling in posts */
+.tag{display:inline-block;padding:4px 8px;border-radius:999px;background:rgba(255,255,255,0.03);font-size:12px;margin-right:6px}
+
+/* small screen tweaks for topbar */
+@media (max-width:600px){
+  .nav-actions input{display:none}
+  .brand h1{font-size:16px}
+}

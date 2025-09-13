@@ -1,0 +1,128 @@
+<!-- FILE: index.html -->
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PhonkShare — Réseau social Phonk</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="logo" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.2"/><path d="M6 16l4-8 4 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <div>
+        <h1>PhonkShare</h1>
+        <small>drop the vibe • partage tes sons</small>
+      </div>
+    </div>
+    <nav class="nav-actions">
+      <input id="search" placeholder="Rechercher...">
+      <button id="newPostBtn" class="btn">Nouveau</button>
+      <button id="loginBtn" class="btn">Connexion</button>
+    </nav>
+  </header>
+
+  <main class="container">
+    <aside class="left-col">
+      <section class="profile card">
+        <div class="avatar">PS</div>
+        <div>
+          <strong id="userName">@invité</strong>
+          <div class="meta" id="userEmail">non connecté</div>
+        </div>
+      </section>
+
+      <section class="trending card">
+        <h3>Trends</h3>
+        <ul id="trendingList"></ul>
+      </section>
+    </aside>
+
+    <section class="feed" id="feed"></section>
+
+    <aside class="right-col">
+      <section class="upload card">
+        <h3>Publier un son</h3>
+        <form id="postForm">
+          <input type="text" id="postTitle" placeholder="Titre du morceau" required>
+          <textarea id="postText" placeholder="Description... (tags: #phonk #chill)"></textarea>
+          <input type="file" id="postAudio" accept="audio/*" required>
+          <button type="submit" class="btn">Publier</button>
+        </form>
+      </section>
+
+      <section class="player card" id="miniPlayer">
+        <h3>Lecteur</h3>
+        <div class="player-body">
+          <div id="currentTitle">—</div>
+          <audio id="audio" controls></audio>
+          <canvas id="viz" width="300" height="60"></canvas>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <template id="postTpl">
+    <article class="post card">
+      <header class="post-head">
+        <div class="post-avatar">PH</div>
+        <div>
+          <strong class="post-author">@user</strong>
+          <div class="post-time">—</div>
+        </div>
+      </header>
+      <main class="post-body">
+        <h2 class="post-title"></h2>
+        <p class="post-text"></p>
+        <audio class="post-audio" controls></audio>
+      </main>
+      <footer class="post-actions">
+        <button class="like">❤ <span class="like-count">0</span></button>
+        <button class="share">Partager</button>
+      </footer>
+    </article>
+  </template>
+
+  <!-- Firebase SDKs -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-auth.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { getStorage } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js";
+
+    const firebaseConfig = {
+      apiKey: "TON_API_KEY",
+      authDomain: "TON_PROJET.firebaseapp.com",
+      projectId: "TON_PROJET",
+      storageBucket: "TON_PROJET.appspot.com",
+      messagingSenderId: "XXXXXXX",
+      appId: "XXXXXXX"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    window.auth = getAuth(app);
+    window.db = getFirestore(app);
+    window.storage = getStorage(app);
+    window.provider = new GoogleAuthProvider();
+
+    // Observer utilisateur
+    onAuthStateChanged(auth, (user)=>{
+      const name = document.getElementById("userName");
+      const email = document.getElementById("userEmail");
+      if(user){
+        name.textContent = user.displayName || "@user";
+        email.textContent = user.email;
+      } else {
+        name.textContent = "@invité";
+        email.textContent = "non connecté";
+      }
+    });
+  </script>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
